@@ -1,0 +1,594 @@
+/*css分類：
+1. 全局變數
+2. 登入與註冊
+3. 共通排版
+4. 頂部統計面板
+5. 目標管理清單
+6. 每日打卡
+7. 番茄鐘
+8. 帳戶資料
+9. 補充規則 */
+
+/* **********************************
+   全局變數
+   **********************************/
+:root {
+    --primary-color: #4E8D7C;
+    --primary-light: #A3C9BC;
+    --secondary-color: #F4F7F6;
+    --accent-color: #E76F51;
+    --text-dark: #2C3E38;
+    --text-light: #7A8F88;
+    --card-bg: #FFFFFF;
+    --danger-color: #E07A5F;
+}
+
+body {
+    font-family: 'PingFang HK', 'Microsoft JhengHei', Arial, sans-serif;
+    background-color: var(--secondary-color);
+}
+
+/* 強制將所有fab button固定於畫面右下角 */
+ion-fab {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 999;
+}
+
+/* **********************************
+   登入與註冊
+   **********************************/
+#authPage {
+    --background: linear-gradient(160deg, #E8F5E9 0%, #FFFDF5 100%);
+}
+
+.login-panel {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(78, 141, 124, 0.15);
+    padding: 24px 20px;
+    max-width: 420px;
+    margin: 20px auto 30px auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-decor-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, var(--accent-color), var(--primary-light));
+}
+
+.login-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin: 12px auto 10px auto;
+    box-shadow: 0 4px 10px rgba(78, 141, 124, 0.2);
+}
+
+.login-header {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+/* 切換 Tab */
+.login-tabs {
+    display: flex;
+    margin-bottom: 14px;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.login-tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-light);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-tab-btn.active {
+    color: var(--text-dark);
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 輸入框 */
+.login-input-item {
+    --background: var(--secondary-color);
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    --min-height: 54px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+/* 登入按鈕 */
+.login-submit-btn {
+    --background: linear-gradient(to right, var(--primary-color) 0%, #6CB8A5 100%);
+    --background-activated: #3E7B6C;
+    --color: #ffffff;
+    --border-radius: 12px;
+    font-weight: bold;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(78, 141, 124, 0.4);
+    height: 50px;
+}
+
+.login-error {
+    color: var(--danger-color);
+    font-size: 13px;
+    min-height: 18px;
+    text-align: center;
+    margin: 2px 0 8px 0;
+}
+
+/* 第三方登入 */
+.divider-line {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 12px;
+    margin: 16px 0 10px 0;
+    position: relative;
+}
+
+.divider-line::before,
+.divider-line::after {
+    content: "";
+    display: inline-block;
+    width: 25%;
+    height: 1px;
+    background-color: #E2E8F0;
+    vertical-align: middle;
+    margin: 0 8px;
+}
+
+.social-login-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.social-item {
+    --border-radius: 12px;
+    --border-color: #E2E8F0;
+    --border-width: 1px;
+    --color: var(--text-dark);
+    height: 50px;
+    width: 100%;
+    max-width: 100%;
+    --background: var(--card-bg);
+}
+
+.social-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.social-inner img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.beta-badge {
+    font-size: 10px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #F472B6 0%, #FB923C 100%);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 4px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(244, 114, 182, 0.3);
+    white-space: nowrap;
+}
+
+/* 底部聲明 */
+.terms-agreement {
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.6;
+    margin-top: 16px;
+    color: var(--text-light);
+}
+
+.login-quote {
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 16px;
+}
+
+/* **********************************
+   共通排版
+   **********************************/
+#appMainPage {
+    /* 主畫面背景漸變 */
+    --background: linear-gradient(180deg, #F4F9F9 0%, #FFFFFF 100%);
+}
+
+.tab-page {
+    padding-top: 8px;
+}
+
+.info-panel {
+    background-color: var(--card-bg);
+    border: 1px solid #E8F0EE;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.panel-header {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.empty-state-msg {
+    text-align: center;
+    color: var(--text-light);
+    padding: 30px 8px;
+    font-size: 14px;
+}
+
+/* **********************************
+   頂部統計面板
+   **********************************/
+.dashboard-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: nowrap;
+    /* 強制一行 */
+}
+
+.dashboard-card {
+    flex: 1 1 0;
+    /* 四個等寬 */
+    min-width: 0;
+    /* 防止內容撐爆 */
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 14px 4px;
+    /* 左右收窄少少，四格先夠位 */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(78, 141, 124, 0.2);
+}
+
+.stat-num {
+    font-size: 20px;
+    /* 由 24px 收細，避免 100% 呢類字撐爆 */
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.stat-title {
+    font-size: 11px;
+    /* 由 12px 收細少少 */
+    margin-top: 4px;
+    opacity: 0.9;
+    white-space: nowrap;
+    /* 標題唔好斷行 */
+}
+
+/* **********************************
+   目標管理清單
+   **********************************/
+#goalListContainer,
+#checkInListContainer {
+    padding-bottom: 90px;
+}
+
+.search-filter-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 4px 12px;
+    border: 1px solid #E8F0EE;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.search-filter-toolbar ion-searchbar {
+    flex: 1;
+    --background: transparent;
+    --placeholder-color: var(--text-light);
+    padding-inline-start: 0;
+}
+
+.search-filter-toolbar ion-select {
+    --padding-start: 8px;
+    color: var(--text-light);
+}
+
+.goal-item-card {
+    background-color: var(--card-bg);
+    border: 1px solid #E8F0EE;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
+}
+
+.goal-item-card:hover {
+    transform: translateY(-2px);
+}
+
+.goal-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.goal-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.goal-category-tag {
+    font-size: 11px;
+    background-color: #E8F5E9;
+    color: var(--primary-color);
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.goal-card-header ion-button.delete-btn {
+    margin-left: auto;
+    --color: var(--danger-color);
+}
+
+.goal-week-progress {
+    display: flex;
+    gap: 8px;
+}
+
+.progress-cell {
+    flex: 1;
+    height: 36px;
+    border: 2px solid #E2E8F0;
+    border-radius: 8px;
+    background-color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-weight: bold;
+    cursor: default;
+}
+
+.progress-cell.is-done {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6CB8A5 100%);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.progress-cell.is-future {
+    opacity: 0.4;
+}
+
+.week-progress-text {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 10px;
+}
+
+/* 月模式長條圖 */
+.month-bar-wrap {
+    margin-top: 8px;
+}
+
+.month-bar-track {
+    width: 100%;
+    height: 16px;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #E2E8F0;
+}
+
+.month-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    border-radius: 8px;
+    transition: width 0.4s ease;
+}
+
+.month-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 4px;
+}
+
+.month-bar-label b {
+    color: var(--text-dark);
+}
+
+/* **********************************
+   每日打卡
+   **********************************/
+.checkin-week-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 5px;
+}
+
+.checkin-date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.checkin-date-text {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.checkin-date-num {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.checkin-date-tick {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkin-date-tick ion-icon {
+    color: var(--primary-light);
+    font-size: 22px;
+}
+
+.checkin-task-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    border: 1px solid #E8F0EE;
+    background-color: var(--card-bg);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.checkin-task-item.is-done {
+    background: linear-gradient(90deg, #E8F5E9 0%, #F4F9F9 100%);
+    border-color: var(--primary-light);
+    border-left: 4px solid var(--primary-color);
+}
+
+.checkin-task-item ion-checkbox {
+    --size: 24px;
+    --checkbox-background-checked: var(--primary-color);
+    margin-right: 12px;
+    margin-left: 12px;
+}
+
+.checkin-task-item ion-label {
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.checkin-task-item.is-done ion-label {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.checkin-task-item.is-done ion-label::after {
+    content: " 👏";
+    font-size: 18px;
+}
+
+/* **********************************
+   番茄鐘
+   **********************************/
+/* 番茄鐘自訂時間輸入框 */
+#timerInput {
+    flex: 1;
+    font-size: 28px;
+    font-weight: bold;
+    color: #4C1D95;
+    text-align: center;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    min-height: 52px;
+    --min-height: 52px;
+}
+
+/* 真正套用到 Ionic shadow DOM 內部的 input */
+#timerInput::part(native) {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #4C1D95;
+}
+
+/* **********************************
+  帳戶資料
+   **********************************/
+.account-info-row {
+    font-size: 15px;
+    color: var(--text-dark);
+    padding: 10px 0;
+}
+
+.display-user-email {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+
+/* **********************************
+  補充規則
+   **********************************/
+/* 按鈕與輸入框高度限制 */
+#logoutBtn,
+#clearAllDataBtn,
+#addQuoteBtn,
+#confirmAddGoalBtn {
+    height: 48px !important;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+    font-size: 16px !important;
+    --border-radius: 12px;
+}
+
+#confirmAddGoalBtn {
+    max-height: 48px !important;
+    width: 100% !important;
+}
+
+ion-item,
+ion-textarea {
+    --min-height: 48px !important;
+}

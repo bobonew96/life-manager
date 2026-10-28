@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生管理器</title>
+    <!-- app標題logo -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.js"></script>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <ion-app>
+        <ion-header id="appHeader" style="display: none;">
+            <ion-toolbar style="--background: var(--primary-color); --color: white;">
+                <ion-title>人生管理器</ion-title>
+            </ion-toolbar>
+        </ion-header>
+
+        <!-- ***************** 登入／註冊主畫面 ***************** -->
+        <ion-content class="ion-padding" id="authPage">
+            <div class="login-panel">
+                <div class="login-decor-bar"></div>
+                <div class="login-icon">💪</div>
+                <div class="login-header" id="authPageTitle">歡迎你返嚟呀!!</div>
+
+                <div class="login-tabs">
+                    <div class="login-tab-btn active" id="tabLogin">登入</div>
+                    <div class="login-tab-btn" id="tabRegister">註冊</div>
+                </div>
+
+                <!-- 不要分隔綫 -->
+                <ion-list lines="none">
+                    <ion-item class="login-input-item">
+                        <ion-input id="authEmailInput" type="email" label="電子郵件" label-placement="floating"
+                            placeholder="you@example.com"></ion-input>
+                    </ion-item>
+                    <ion-item class="login-input-item">
+                        <ion-input id="authPwInput" type="password" label="密碼" label-placement="floating"
+                            placeholder="最少 6 個字"></ion-input>
+                    </ion-item>
+                    <ion-item class="login-input-item" id="confirmPwItem" style="display: none;">
+                        <ion-input id="authConfirmInput" type="password" label="確認密碼" label-placement="floating"
+                            placeholder="再打一次密碼"></ion-input>
+                    </ion-item>
+                </ion-list>
+
+                <!-- 登入/注冊錯誤 -->
+                <div class="login-error" id="authError"></div>
+
+                <ion-button expand="block" class="login-submit-btn" id="authSubmitBtn">登入</ion-button>
+                <div class="divider-line">或選擇使用</div>
+
+                <!-- 外部登入 -->
+                <div class="social-login-grid">
+                    <ion-button fill="outline" class="social-item" id="googleLoginBtn">
+                        <div class="social-inner">
+                            <img src="google_icon.png" alt="Logo" />
+                            <span>Google</span>
+                            <span class="beta-badge">測試中</span>
+                        </div>
+                    </ion-button>
+                </div>
+
+                <div class="terms-agreement">
+                    繼續即代表你同意本軟體的<a href="#">服務條款與隱私政策</a>
+                </div>
+                <!-- 預設金句會被displayRandomQuote生成覆蓋 -->
+                <div class="login-quote">做完好過做完美，先完成，再完美！✨</div>
+            </div>
+        </ion-content>
+
+        <!-- ***************** 主 App ***************** -->
+        <ion-content class="ion-padding" id="appMainPage" style="display: none;">
+
+            <!-- 頁内切換顯示 -->
+            <ion-segment id="mainSegment" value="tabGoalPage"
+                style="--background: #E8F5E9; border-radius: 10px; padding: 4px; margin-bottom: 12px;">
+                <ion-segment-button value="tabGoalPage"
+                    style="--color: var(--text-light); --color-checked: var(--primary-color); --indicator-color: transparent;">
+                    <ion-label>目標管理</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="tabCheckInPage"
+                    style="--color: var(--text-light); --color-checked: var(--primary-color); --indicator-color: transparent;">
+                    <ion-label>每日打卡</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="tabAccountPage"
+                    style="--color: var(--text-light); --color-checked: var(--primary-color); --indicator-color: transparent;">
+                    <ion-label>帳戶資料</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+
+            <!-- ***************** 頁面 1：目標管理 ***************** -->
+            <div id="tabGoalPage" class="tab-page">
+
+                <!-- 1. 統計資料 -->
+                <div class="dashboard-row">
+                    <div class="dashboard-card">
+                        <div class="stat-num" id="statTotalGoals">0</div>
+                        <div class="stat-title">目標總數</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="stat-num" id="statTodayDone">0</div>
+                        <div class="stat-title">今日完成數</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="stat-num" id="statTodayRate">0%</div>
+                        <div class="stat-title">本日完成率</div>
+                    </div>
+                    <div class="dashboard-card" id="weekRateCard">
+                        <div class="stat-num" id="statWeekRate">0%</div>
+                        <div class="stat-title">
+                            本週完成率
+                            <!-- 本週完成率計算説明圖示 -->
+                            <ion-icon name="information-circle-outline" id="weekRateInfoBtn"
+                                style="font-size: 14px; vertical-align: middle; margin-left: 2px; cursor: pointer;"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 搜尋與篩選 -->
+                <div class="search-filter-toolbar">
+                    <ion-searchbar id="searchInput" placeholder="搜尋"
+                        style="--border-radius: 8px; padding: 0; --box-shadow: none; --background: transparent;"></ion-searchbar>
+                    <ion-select id="filterSelect" value="all" interface="popover"
+                        style="min-width: 80px; max-width: 100px; font-size: 14px;">
+                        <ion-select-option value="all">所有分類</ion-select-option>
+                        <ion-select-option value="運動">運動</ion-select-option>
+                        <ion-select-option value="學習">學習</ion-select-option>
+                        <ion-select-option value="健康">健康</ion-select-option>
+                        <ion-select-option value="其他">其他</ion-select-option>
+                    </ion-select>
+                </div>
+
+                <!-- 目標清單 -->
+                <div class="info-panel" style="padding-bottom: 10px;">
+                    <div class="panel-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>目標清單進度</span>
+                        <span id="displayTodayLabel"
+                            style="font-size: 12px; color: var(--text-light); font-weight: normal;"></span>
+                    </div>
+
+                    <!-- 檢視模式：週／月 -->
+                    <ion-segment id="viewModeSegment" value="week" style="margin-bottom: 10px;">
+                        <ion-segment-button value="week"><ion-label>週</ion-label></ion-segment-button>
+                        <ion-segment-button value="month"><ion-label>月</ion-label></ion-segment-button>
+                    </ion-segment>
+
+                    <!-- 週模式：一週日期列 -->
+                    <div class="checkin-week-bar" id="weekProgressBar"></div>
+
+                    <!-- 月模式 -->
+                    <div id="monthSummaryBar"
+                        style="display: none; font-size: 14px; color: var(--text-dark); text-align: center; padding: 10px 0;">
+                    </div>
+                </div>
+
+                <div id="goalListContainer"></div>
+
+                <!-- 右下角新增按鈕 (FAB) -->
+                <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+                    <ion-fab-button id="openAddGoalModal" style="--background: var(--primary-color);">
+                        <ion-icon name="add"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+
+                <!--新增目標 Modal -->
+                <ion-modal trigger="openAddGoalModal" id="addGoalModal">
+                    <ion-header>
+                        <ion-toolbar style="--background: var(--primary-color); --color: white;">
+                            <ion-title>新增目標</ion-title>
+                            <ion-buttons slot="end">
+                                <ion-button id="closeAddModalBtn">取消</ion-button>
+                            </ion-buttons>
+                        </ion-toolbar>
+                    </ion-header>
+                    <ion-content class="ion-padding">
+                        <ion-list>
+                            <ion-item>
+                                <ion-input id="goalNameInput" label="目標名稱" label-placement="floating"
+                                    placeholder="例如：做運動"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-select id="goalCategorySelect" label="分類" label-placement="floating" value="運動">
+                                    <ion-select-option value="運動">運動</ion-select-option>
+                                    <ion-select-option value="學習">學習</ion-select-option>
+                                    <ion-select-option value="健康">健康</ion-select-option>
+                                    <ion-select-option value="其他">其他</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-list>
+                        <ion-button expand="block" id="confirmAddGoalBtn"
+                            style="margin-top: 20px; --background: var(--primary-color);">確認新增</ion-button>
+                    </ion-content>
+                </ion-modal>
+
+                <!-- 分享卡預覽Modal -->
+                <ion-modal id="shareModal" expand="block">
+                    <ion-header>
+                        <ion-toolbar style="--background: var(--primary-color); --color: white;">
+                            <ion-title>分享你的成就</ion-title>
+                            <ion-buttons slot="end">
+                                <ion-button id="closeShareModalBtn">關閉</ion-button>
+                            </ion-buttons>
+                        </ion-toolbar>
+                    </ion-header>
+
+                    <ion-content class="ion-padding" style="--background: var(--secondary-color); text-align: center;">
+                        <div
+                            style="height: 60vh; display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+                            <!-- function createShareImage生成圖片後顯示在這裏 -->
+                            <img id="shareImagePreview"
+                                style="max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" />
+                        </div>
+
+                        <div style="display: flex; gap: 10px; width: 100%;">
+                            <ion-button expand="block" id="downloadShareBtn"
+                                style="flex: 1; margin: 0; height: 48px; --background: var(--primary-color); --border-radius: 12px; font-weight: bold;">
+                                <ion-icon name="download-outline" slot="start"></ion-icon>
+                                儲存圖片
+                            </ion-button>
+                            <ion-button expand="block" id="directShareBtn"
+                                style="flex: 1; margin: 0; height: 48px; --background: var(--text-dark); --border-radius: 12px; font-weight: bold;">
+                                <ion-icon name="share-social-outline" slot="start"></ion-icon>
+                                分享
+                            </ion-button>
+                        </div>
+                    </ion-content>
+                </ion-modal>
+            </div> 
+
+            <!-- ***************** 每日打卡頁面 ***************** -->
+            <div id="tabCheckInPage" class="tab-page" style="display: none;">
+
+                <div class="info-panel">
+                    <div class="panel-header">今日打卡</div>
+                    <div id="checkInListContainer" style="padding: 0;"></div>
+                </div>
+
+                <!-- 右下角番茄鐘FAB按鈕 -->
+                <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+                    <ion-fab-button id="openTimerModal" style="--background: var(--danger-color);">
+                        <ion-icon name="timer-outline"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+
+                <!-- 番茄鐘 Modal -->
+                <ion-modal trigger="openTimerModal" id="timerModal">
+                    <ion-header>
+                        <ion-toolbar
+                            style="--background: linear-gradient(135deg, #A78BFA 0%, #818CF8 100%); --color: white;">
+                            <ion-title style="font-weight: bold;">✨ 專注番茄鐘</ion-title>
+                            <ion-buttons slot="end">
+                                <ion-button id="closeTimerModalBtn" style="--color: white;">關閉</ion-button>
+                            </ion-buttons>
+                        </ion-toolbar>
+                    </ion-header>
+
+                    <ion-content class="ion-padding"
+                        style="--background: linear-gradient(160deg, #FDF4FF 0%, #EEF2FF 100%);">
+                        <div style="padding-top: 20px;">
+
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <div id="timerDisplay" style="font-size: 85px; font-weight: 900; font-family: monospace; 
+                                            color: #FFFFFF; 
+                                            text-shadow: 0px 4px 20px rgba(167, 139, 250, 0.8);">
+                                    25:00
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+                                <ion-button expand="block"
+                                    style="flex: 1; height: 50px; font-size: 15px; font-weight: bold; --background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%); --box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);"
+                                    onclick="setTimerPreset(25)">
+                                    25 分鐘 (專注)
+                                </ion-button>
+                                <ion-button expand="block"
+                                    style="flex: 1; height: 50px; font-size: 15px; font-weight: bold; --background: linear-gradient(135deg, #F472B6 0%, #FB923C 100%); --box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);"
+                                    onclick="setTimerPreset(5)">
+                                    5 分鐘 (放鬆)
+                                </ion-button>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 12px; min-height: 56px;">
+                                <span
+                                    style="color: #8B5CF6; font-weight: bold; white-space: nowrap; font-size: 16px;">自訂專注時間</span>
+                                <ion-input type="number" id="timerInput" min="1" max="180" value="25"
+                                    onchange="applyCustomTime()">
+                                </ion-input>
+                                <span
+                                    style="color: #8B5CF6; font-weight: bold; white-space: nowrap; font-size: 16px;">分鐘</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 12px;">
+                            <ion-button expand="block"
+                                style="flex: 1; height: 55px; font-size: 16px; font-weight: bold; --background: linear-gradient(135deg, #60A5FA 0%, #818CF8 100%); --box-shadow: 0 4px 15px rgba(96, 165, 250, 0.4);"
+                                onclick="startTimer()">
+                                <ion-icon name="play" slot="start"></ion-icon> 開始
+                            </ion-button>
+                            <ion-button expand="block"
+                                style="flex: 1; height: 55px; font-size: 16px; font-weight: bold; --background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%); --box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);"
+                                onclick="pauseTimer()">
+                                <ion-icon name="pause" slot="start"></ion-icon> 暫停
+                            </ion-button>
+                            <ion-button expand="block"
+                                style="flex: 1; height: 55px; font-size: 16px; font-weight: bold; --background: #E5E7EB; --color: #6B7280;"
+                                onclick="resetTimer()">
+                                <ion-icon name="refresh" slot="start"></ion-icon> 重置
+                            </ion-button>
+                        </div>
+                    </ion-content>
+                </ion-modal>
+
+            </div> 
+
+            <!-- ***************** 帳戶資料頁面 ***************** -->
+            <div id="tabAccountPage" class="tab-page" style="display: none;">
+                <div class="info-panel">
+                    <div class="panel-header">帳戶資料</div>
+                    <div class="account-info-row">登入帳戶：<span class="display-user-email" id="accountEmailDisplay"></span>
+                    </div>
+                    <ion-button expand="block" id="logoutBtn" style="--background: var(--danger-color);">登出</ion-button>
+                </div>
+
+                <div class="info-panel">
+                    <div class="panel-header">使用統計</div>
+                    <div class="panel-sub" id="accountStatsDisplay" style="color: var(--text-light);"></div>
+                </div>
+
+                <div class="info-panel">
+                    <div class="panel-header">危險操作</div>
+                    <ion-button expand="block" id="clearAllDataBtn"
+                        style="--background: var(--danger-color);">清除所有資料</ion-button>
+                </div>
+
+                <!-- 自定義金句區塊 -->
+                <div class="info-panel" style="margin-top: 20px;">
+                    <div class="panel-header">自定義鼓勵金句</div>
+                    <div class="panel-sub" style="color: var(--text-light);">新增嘅金句會加入隨機金句庫！</div>
+
+                    <ion-item lines="none"
+                        style="border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 10px; --background: var(--secondary-color);">
+                        <ion-textarea id="customQuoteInput" placeholder="輸入你想鼓勵自己嘅說話... (可多行)" auto-grow="true" rows="3"
+                            style="--color: var(--text-dark);"></ion-textarea>
+                    </ion-item>
+
+                    <ion-button expand="block" id="addQuoteBtn"
+                        style="--background: var(--primary-color);">新增金句</ion-button>
+                </div>
+            </div>
+
+        </ion-content>
+
+        <ion-alert id="confirmAlert"></ion-alert>
+        <ion-toast id="tipToast" duration="1600" style="--background: var(--text-dark); --color: white;"></ion-toast>
+
+        <!--本週完成率說明浮窗 -->
+        <ion-popover id="weekRatePopover" trigger="weekRateInfoBtn" dismiss-on-select="true" style="--width: 280px;">
+            <ion-content class="ion-padding">
+                <div style="font-size: 15px; font-weight: bold; color: var(--primary-color); margin-bottom: 8px;">
+                    本週完成率點計？
+                </div>
+                <div style="font-size: 14px; color: var(--text-dark); line-height: 1.6;">
+                    公式：<br>
+                    <b>本週打卡次數 ÷（目標總數 × 7）</b>
+                </div>
+                <div style="font-size: 13px; color: var(--text-light); line-height: 1.6; margin-top: 10px;">
+                    例如你有 3 個目標，本週打了 9 次卡：<br>
+                    9 ÷（3 × 7）= 9 ÷ 21 ≈ <b>43%</b>
+                </div>
+                <div style="font-size: 13px; color: var(--text-light); line-height: 1.6; margin-top: 10px;">
+                    注意：分母固定用「目標數 × 7」，所以星期一開始時完成率會偏低，隨住你一週內持續打卡，數字會慢慢上升，到星期日全部完成才會是 100%。
+                </div>
+            </ion-content>
+        </ion-popover>
+
+    </ion-app>
+
+    <!-- 載入主程式 JavaScript -->
+    <script src="app.js"></script>
+</body>
+
+</html>
